@@ -22,7 +22,7 @@
 				</tr>
 				<tr>
 					<td><label>Nombre</label></td>
-					<td><input type="text" name="nombre" value='<c:out value="${alumnos.nombre}"></c:out>' ></td>
+					<td><input type="hidden" name="nombre" value='<c:out value="${alumnos.nombre}"></c:out>' ></td>
 				</tr>
 				<tr>
 					<td><label>Curso</label></td>

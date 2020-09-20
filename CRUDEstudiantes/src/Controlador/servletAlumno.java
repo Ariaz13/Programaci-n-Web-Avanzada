@@ -2,10 +2,12 @@ package Controlador;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import DAO.estDao;
 import Modelo.alumnos;
 
+@WebServlet("/servletAlumno")
 public class servletAlumno extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	estDao estdao;
@@ -23,18 +26,14 @@ public class servletAlumno extends HttpServlet {
 		String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
 		try {
 			estdao = new estDao(jdbcURL, jdbcUsername, jdbcPassword);
-		}catch (Exception e) {
-			System.out.println("ES KK" + e);
-		}
+		}catch (Exception e) {}
 	}
 	
-	public servletAlumno() {
-		super();
-	}
+	public servletAlumno() {}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Hola Servlet..");
+		System.out.println("Hola Servlet.. KK");
 		String action = request.getParameter("action");
 		System.out.println(action);
 		try {
@@ -46,11 +45,14 @@ public class servletAlumno extends HttpServlet {
 				nuevo(request, response);
 				break;
 			case "register":
-				System.out.println("entro");
+				//System.out.println("entro");
 				registrar(request, response);
 				break;
 			case "mostrar":
 				mostrar(request, response);
+				break;
+			case "buscarNoControl":
+				mostrarNoControl(request, response);
 				break;
 			case "showedit":
 				showEditar(request, response);
@@ -66,6 +68,7 @@ public class servletAlumno extends HttpServlet {
 			}			
 		} catch (SQLException e) {
 			e.getStackTrace();
+			System.out.println("NO SIRVE!");
 		}
 	
 	}
@@ -85,42 +88,52 @@ public class servletAlumno extends HttpServlet {
 	private void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		alumnos alum = new alumnos(Integer.parseInt(request.getParameter("no_control")), request.getParameter("nombre"), request.getParameter("curso"), request.getParameter("semestre"));
 		estdao.insertar(alum);
-		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
 	}
 	
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/registrar.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/Vista/registrar.jsp");
 		dispatcher.forward(request, response);
 	}
 	
 	
 	private void mostrar(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException , ServletException{
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/mostrar.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/Vista/mostrar.jsp");
 		List<alumnos> listaAlum= estdao.listarAlumnos();
 		request.setAttribute("lista", listaAlum);
 		dispatcher.forward(request, response);
 	}	
 	
+	private void mostrarNoControl(HttpServletRequest request, HttpServletResponse res) throws SQLException, ServletException, IOException{
+		alumnos alum = estdao.obtenerPorNoControl(Integer.parseInt(request.getParameter("no_control")));
+		List<alumnos> lista= new ArrayList<alumnos>();
+		lista.add(alum);
+		request.setAttribute("lista", lista);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/Vista/mostrar.jsp");
+		dispatcher.forward(request, res);
+	}
+	
 	private void showEditar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		alumnos alum = estdao.obtenerPorNoControl(Integer.parseInt(request.getParameter("no_control")));
 		request.setAttribute("alumno", alum);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/editar.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/Vista/editar.jsp");
 		dispatcher.forward(request, response);
 	}
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
 		alumnos alum = new alumnos(Integer.parseInt(request.getParameter("no_control")), request.getParameter("nombre"), request.getParameter("curso"), request.getParameter("semestre"));
 		estdao.actualizar(alum);
-		index(request, response);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/Vista/mostrar.jsp");
+		dispatcher.forward(request, response);
 	}
 	
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
 		alumnos alum = estdao.obtenerPorNoControl(Integer.parseInt(request.getParameter("no_control")));
 		estdao.eliminar(alum);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/Vista/mostrar.jsp");
 		dispatcher.forward(request, response);
 		
 	}

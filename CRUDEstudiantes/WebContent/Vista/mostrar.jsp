@@ -21,7 +21,7 @@
 			</tr>
 		</table>
 		<br>
-		<form action="servletAlumno?action=buscarId" method="post">
+		<form action="servletAlumno?action=buscarNoControl" method="post">
 			<table>
 				<tr>
 					<th>Buscar alumno por No. Control:</th>
@@ -45,8 +45,8 @@
 					<td><c:out value="${alumnos.nombre}"/></td>
 					<td><c:out value="${alumnos.curso}"/></td>
 					<td><c:out value="${alumnos.semestre}"/></td>
-					<th><a href="servletAlumno?action=showeditar&id=<c:out value="${alumnos.noControl}" />">Editar</a></th>
-					<th><a href="servletAlumno?action=eliminar&id=<c:out value="${alumnos.noControl}"/>">Eliminar</a> </th>				
+					<th><a href="servletAlumno?action=showeditar&no_control=<c:out value="${alumnos.noControl}" />">Editar</a></th>
+					<th><a href="servletAlumno?action=eliminar&no_control=<c:out value="${alumnos.noControl}"/>">Eliminar</a> </th>				
 				</tr>
 			</c:forEach>
 		</table>

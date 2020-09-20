@@ -38,4 +38,10 @@ public class conexion {
 	public Connection getJdbcConnection() {
 		return jdbcConnection;
 	} 
+	
+	public static void main (String[] args) throws SQLException {
+		conexion c = new conexion("jdbc:mysql://localhost/alumnos","root","root");
+		c.conectar();
+		
+	}
 }
