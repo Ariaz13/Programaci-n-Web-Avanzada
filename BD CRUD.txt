@@ -1,0 +1,20 @@
+CREATE DATABASE alumnos;
+
+USE alumnos;
+
+CREATE TABLE lista (
+  np_control INT NOT NULL,
+  nombre VARCHAR(50) NOT NULL,
+  curso VARCHAR(2) NOT NULL,
+  semestre INT NOT NULL,
+    
+  PRIMARY KEY(no_control)
+);
+
+CREATE TABLE usuario(
+  id INT NOT NULL AUTO_INCREMENT,
+  usuario VARCHAR(50) NOT NULL,
+  password VARCHAR(50) NOT NULL,
+    
+  PRIMARY KEY(id)
+);
