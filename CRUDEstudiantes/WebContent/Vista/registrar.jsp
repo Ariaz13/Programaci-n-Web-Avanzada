@@ -5,10 +5,15 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Registrar Alumno</title>
-		<link rel="stylesheet" type="text/css" href="Vista/css/default.css">
 	</head>
 	<body>
 		<h1>Registrar Alumno</h1>
+		<%
+			String name=(String)session.getAttribute("name");
+			if(name==null){	
+			response.sendRedirect("servletUsuario?action=login");}
+			else{System.out.println("Sesión actual: " +name);}
+		%>
 		<form action="servletAlumno?action=registrar" method="post">
 			<table>
 				<tr>

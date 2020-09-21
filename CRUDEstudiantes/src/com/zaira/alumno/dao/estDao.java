@@ -1,4 +1,4 @@
-package DAO;
+package com.zaira.alumno.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import Modelo.alumnos;
-import Modelo.conexion;
+import com.zaira.alumno.modelo.alumnos;
+import com.zaira.alumno.modelo.conexion;
 
 public class estDao {
 	private conexion con;
@@ -22,14 +22,14 @@ public class estDao {
 	
 	//Nuevo estudiante
 	public boolean insertar(alumnos alum) throws SQLException{
-		String sql = "INSERT INTO lista (no_control, nombre, curso, semestre) VALUES (?,?,?,?)";
+		String sql = "INSERT INTO lista (no_control, nombre, curso, semestre) VALUES (?, ?, ?, ?)";
 		con.conectar();
 		connection = con.getJdbcConnection();
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setLong(1, alum.getnoControl());
 		statement.setString(2, alum.getnombre());
 		statement.setString(3, alum.getcurso());
-		statement.setString(4, alum.getsemestre());
+		statement.setInt(4, alum.getsemestre());
 		
 		boolean rowInserted = statement.executeUpdate() > 0;
 		statement.close();
@@ -50,7 +50,7 @@ public class estDao {
 			int noControl = resulset.getInt("no_control");
 			String nombre = resulset.getString("nombre");
 			String curso = resulset.getString("curso");
-			String semestre = resulset.getString("semestre");
+			int semestre = resulset.getInt("semestre");
 			alumnos alum = new alumnos (noControl, nombre, curso, semestre);
 			listaAlum.add(alum);
 		}
@@ -71,7 +71,7 @@ public class estDao {
 		ResultSet res = statement.executeQuery();
 		if (res.next()) {
 			alum = new alumnos (res.getInt("no_control"), res.getString("nombre"),
-					res.getString("curso"), res.getString("semestre"));
+					res.getString("curso"), res.getInt("semestre"));
 		}
 		res.close();
 		con.desconectar();
@@ -89,7 +89,7 @@ public class estDao {
 		statement.setLong(1, alum.getnoControl());
 		statement.setString(2, alum.getnombre());
 		statement.setString(3, alum.getcurso());
-		statement.setString(4, alum.getsemestre());
+		statement.setInt(4, alum.getsemestre());
 		
 		rowActualizar = statement.executeUpdate() > 0;
 		statement.close();
@@ -100,7 +100,7 @@ public class estDao {
 	//Eliminar
 	public boolean eliminar(alumnos alum) throws SQLException {
 		boolean rowEliminar = false;
-		String sql = "DELETE FROM articulos WHERE no_control=?";
+		String sql = "DELETE FROM lista WHERE no_control=?";
 		con.conectar();
 		connection = con.getJdbcConnection();
 		PreparedStatement statement = connection.prepareStatement(sql);

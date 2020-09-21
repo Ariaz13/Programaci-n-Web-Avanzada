@@ -1,4 +1,4 @@
-package Modelo;
+package com.zaira.alumno.modelo;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,6 +26,7 @@ public class conexion {
             }
             jdbcConnection = DriverManager.getConnection(
                                         jdbcURL, jdbcUsername, jdbcPassword);
+            System.out.println("Conexion LISTA");
         }
     }
      
@@ -39,9 +40,5 @@ public class conexion {
 		return jdbcConnection;
 	} 
 	
-	public static void main (String[] args) throws SQLException {
-		conexion c = new conexion("jdbc:mysql://localhost/alumnos","root","root");
-		c.conectar();
-		
-	}
+	
 }

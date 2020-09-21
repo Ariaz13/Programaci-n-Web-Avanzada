@@ -1,10 +1,10 @@
-package Modelo;
+package com.zaira.alumno.modelo;
 
 public class alumnos {
-	private int noControl;
-	private String nombre, curso, semestre;
+	private int noControl, semestre;
+	private String nombre, curso;
 	
-	public alumnos(int noControl, String nombre, String curso, String semestre) {
+	public alumnos(int noControl, String nombre, String curso, int semestre) {
 		this.noControl = noControl;
 		this.nombre = nombre;
 		this.curso = curso;
@@ -35,11 +35,11 @@ public class alumnos {
 		this.curso = curso;
 	}
 	
-	public String getsemestre() {
+	public int getsemestre() {
 		return semestre;
 	}
 	
-	public void setsemestre (String semestre) {
+	public void setsemestre (int semestre) {
 		this.semestre = semestre;
 	}
 }

@@ -5,10 +5,15 @@
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>Administrar Alumnos</title>
-		<link rel="stylesheet" type="text/css" href="Vista/css/default.css">
 	</head>
 	<body>
 		<h1>Actualizar Alumno</h1>
+		<%
+			String name=(String)session.getAttribute("name");
+			if(name==null){	
+			response.sendRedirect("servletUsuario?action=login");}
+			else{System.out.println("Sesión actual: " +name);}
+		%>
 		<form action="servletAlumno?action=editar" method="post" >
 			<table>
 				<tr>

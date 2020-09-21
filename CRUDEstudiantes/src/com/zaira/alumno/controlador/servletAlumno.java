@@ -1,4 +1,4 @@
-package Controlador;
+package com.zaira.alumno.controlador;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -11,9 +11,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import DAO.estDao;
-import Modelo.alumnos;
+import com.zaira.alumno.dao.estDao;
+import com.zaira.alumno.modelo.alumnos;
 
 @WebServlet("/servletAlumno")
 public class servletAlumno extends HttpServlet {
@@ -33,9 +34,9 @@ public class servletAlumno extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Hola Servlet.. KK");
+		System.out.println("Hola Servlet Alumno..");
 		String action = request.getParameter("action");
-		System.out.println(action);
+		System.out.println("Accion del servlet Alumno:" + action);
 		try {
 			switch (action) {
 			case "index":
@@ -68,14 +69,13 @@ public class servletAlumno extends HttpServlet {
 			}			
 		} catch (SQLException e) {
 			e.getStackTrace();
-			System.out.println("NO SIRVE!");
 		}
 	
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("Hola Servlet..");
+		System.out.println("Hola Servlet Alumno..");
 		doGet(request, response);
 	}
 	
@@ -86,9 +86,9 @@ public class servletAlumno extends HttpServlet {
 	}
 	
 	private void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-		alumnos alum = new alumnos(Integer.parseInt(request.getParameter("no_control")), request.getParameter("nombre"), request.getParameter("curso"), request.getParameter("semestre"));
+		alumnos alum = new alumnos(Integer.parseInt(request.getParameter("no_control")), request.getParameter("nombre"), request.getParameter("curso"), Integer.parseInt(request.getParameter("semestre")));
 		estdao.insertar(alum);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/Vista/mostrar.jsp");
 		dispatcher.forward(request, response);
 	}
 	
@@ -117,15 +117,13 @@ public class servletAlumno extends HttpServlet {
 	private void showEditar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		alumnos alum = estdao.obtenerPorNoControl(Integer.parseInt(request.getParameter("no_control")));
 		request.setAttribute("alumno", alum);
-		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/Vista/editar.jsp");
 		dispatcher.forward(request, response);
 	}
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
-		alumnos alum = new alumnos(Integer.parseInt(request.getParameter("no_control")), request.getParameter("nombre"), request.getParameter("curso"), request.getParameter("semestre"));
+		alumnos alum = new alumnos(Integer.parseInt(request.getParameter("no_control")), request.getParameter("nombre"), request.getParameter("curso"), Integer.parseInt(request.getParameter("semestre")));
 		estdao.actualizar(alum);
-		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/Vista/mostrar.jsp");
 		dispatcher.forward(request, response);
 	}

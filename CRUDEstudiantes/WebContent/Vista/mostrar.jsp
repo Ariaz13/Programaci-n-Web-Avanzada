@@ -1,14 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>Administrar Alumnos</title>
-		<link rel="stylesheet" type="text/css" href="Vista/css/default.css">
 	</head>
 	<body>
 		<h1>Administrar Alumnos</h1>
+		<%
+			String name=(String)session.getAttribute("name");
+			if(name==null){	
+			response.sendRedirect("servletUsuario?action=login");}
+			else{System.out.println("Sesión actual: " +name);}
+		%>
 		<table>
 			<tr>
 				<th><a href="servletAlumno?action=nuevo">Registrar Alumno</a></th>			
@@ -21,7 +27,7 @@
 			</tr>
 		</table>
 		<br>
-		<form action="servletAlumno?action=buscarNoControl" method="post">
+		<form action="servletAlumno?action=buscarId" method="post">
 			<table>
 				<tr>
 					<th>Buscar alumno por No. Control:</th>
@@ -51,4 +57,4 @@
 			</c:forEach>
 		</table>
 	</body>
-</html>
+</html> 
